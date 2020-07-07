@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+</head>
+<body>
+    {% for obj in todo_list %}
+    <tbody>
+        <tr>
+            <td style="width: 10%;padding-right: 5px">{{ obj.idx }}</td>
+            <td style="padding-right:10px">{{ obj.content }}</td>
+            <td style="padding-right: 5px">{{ obj.status }} </td>
+            <td style="padding-right: 5px">V</td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</body>
+</html>
