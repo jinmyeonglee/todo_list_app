@@ -38,9 +38,10 @@ def show_todo_list():
 
 @app.route('/done_list/<idx>', methods=['POST'])
 def unmark_todo(idx):
+    db_server.unmark_todo_done(src.todo.Todo(int(idx), None, None))
     done_todo_list = db_server.get_done_todo_list()
     return render_template('done_list.html', todo_list=done_todo_list)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run('0.0.0.0')
