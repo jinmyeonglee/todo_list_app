@@ -106,3 +106,16 @@ class DBServer:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
+
+    def unmark_todo_done(self, todo):
+        if todo.status == 0:
+            raise Exception(str(todo.idx) + ": already doing job!")
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        sql_query = read_sql_file("./queries/unmark_todo.sql")
+        sql_query[-1] = sql_query[-1] % todo.idx
+
+        self.excute_queries(sql_query, cursor)
+
+        conn.close()

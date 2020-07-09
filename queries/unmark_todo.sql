@@ -1,0 +1,1 @@
+UPDATE todo_list SET status = 0 WHERE idx = %d;

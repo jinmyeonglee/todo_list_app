@@ -5,8 +5,8 @@
     <title>Todo List</title>
 </head>
 <body>
-    <form action="{{ url_for('show_done_todo') }}" method="get">
-        <input type="submit" value="Show done todo list">
+    <form action="{{ url_for('show_todo_list') }}" method="get">
+        <input type="submit" value="Show todo list">
     </form>
 
     <table>
@@ -14,10 +14,9 @@
             <TR>
                 <TD class="c1">@ </TD>
                 <TD class="c2">{{ obj.content }}</TD>
-{#                <TD calass="c3">{{ obj.status }}</TD>#}
                 <TD class="c4">
-                    <form action="{{ url_for('mark_todo_done', idx=obj.idx) }}" method="post">
-                        <input type="submit" value="DONE">
+                    <form action="{{ url_for('unmark_todo', idx=obj.idx) }}" method="post">
+                        <input type="submit" value="Add to todo list">
                     </form>
                 </TD>
                 <TD class="c5">
@@ -28,6 +27,5 @@
             </TR>
         {% endfor %}
     </table>
-
 </body>
 </html>
