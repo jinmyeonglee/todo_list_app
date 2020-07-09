@@ -5,11 +5,34 @@
     <title>Todo List</title>
 </head>
 <body>
-    {% for obj in todo_list %}
-        <td>{{ obj.idx }}</td>
-        <td>{{ obj.content }}</td>
-        <td>{{ obj.status }} </td>
-        <td>V</td>
-    {% endfor %}
+    <table>
+        {% for obj in todo_list %}
+            <TR>
+                <TD class="c1">@ </TD>
+                <TD class="c2">{{ obj.content }}</TD>
+                <TD class="c3">{{ obj.status }}</TD>
+                <TD class="c4">
+                    <form action="{{ url_for('mark_todo_done', idx=obj.idx) }}" method="post">
+                        <input type="submit" value="DONE">
+                    </form>
+                </TD>
+                <TD class="c5">
+                    <form action="{{ url_for('delete_todo', idx=obj.idx) }}" method="post">
+{#                        <input type="hidden" name="delete_idx" value="{{ obj.idx }}">#}
+                        <input type="submit" value="DELETE">
+                    </form>
+                </TD>
+            </TR>
+        {% endfor %}
+    </table>
+{#    {% for obj in todo_list %}#}
+{#        <p>{{ obj.idx }}</p>#}
+{#        <p>{{ obj.content }}</p>#}
+{#        <p>{{ obj.status }}</p>#}
+{#        <form action="{{ url_for('delete_todo', idx=obj.idx) }}" method="post">#}
+{#            <input type="hidden" name="delete_idx" value="{{ obj.idx }}">#}
+{#            <input type="submit" value="DELETE">#}
+{#        </form>#}
+{#    {% endfor %}#}
 </body>
 </html>

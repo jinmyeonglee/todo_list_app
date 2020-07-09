@@ -20,7 +20,7 @@ class DBServer:
     def get_connection(self):
         return pymysql.connect(host=self.info.host, port=int(self.info.port),
                                user=self.info.user, password=self.info.password,
-                               db=self.info.db, charset='utf8')
+                               db=self.info.db, charset='utf8', autocommit=True)
 
     def excute_queries(self, query_list, cursor):
         for q in query_list:
@@ -94,3 +94,15 @@ class DBServer:
 
         conn.close()
 
+    def mark_todo_done(self, todo):
+        if todo.status == 1:
+            raise Exception(str(todo.idx) + ": already done!")
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        sql_query = read_sql_file("./queries/mark_todo_done.sql")
+        sql_query[-1] = sql_query[-1] % todo.idx
+
+        self.excute_queries(sql_query, cursor)
+
+        conn.close()

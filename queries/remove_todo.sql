@@ -1,1 +1,1 @@
-DELETE FROM todo_list WHERE idx=%d
+DELETE FROM todo_list WHERE idx=%d;
