@@ -37,7 +37,6 @@ class DBServer:
 
         todo_list = []
         for row in result:
-            print(row[0], row[1], row[2])
             todo_list.append(Todo(row[0], row[1], row[2]))
 
         conn.close()
@@ -115,6 +114,16 @@ class DBServer:
 
         sql_query = read_sql_file("./queries/unmark_todo.sql")
         sql_query[-1] = sql_query[-1] % todo.idx
+
+        self.excute_queries(sql_query, cursor)
+
+        conn.close()
+
+    def insert_sql_dump(self, filename='./queries/insert_dump.sql'):
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        sql_query = read_sql_file(filename)
 
         self.excute_queries(sql_query, cursor)
 

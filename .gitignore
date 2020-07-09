@@ -2,3 +2,4 @@ venv/*
 dev.ini
 .idea/
 *.xml
+*.out
