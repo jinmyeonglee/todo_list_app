@@ -1,21 +1,24 @@
 import pymysql
 from src.todo import Todo
 from src.utillity import read_sql_file, read_config_file
+from src.redis import RedisClient
 
 
 class MysqlInfo:
     def __init__(self, parser):
-        self.host = parser.get('db', 'db_host')
-        self.user = parser.get('db', 'db_user')
-        self.password = parser.get('db', 'db_pwd')
-        self.db = parser.get('db', 'db_name')
-        self.port = parser.get('db', 'db_port')
+        self.host = parser.get('MySQL', 'host')
+        self.user = parser.get('MySQL', 'user')
+        self.password = parser.get('MySQL', 'pwd')
+        self.db = parser.get('MySQL', 'name')
+        self.port = parser.get('MySQL', 'port')
 
 
-class DBServer:
+class MySQLClient:
     def __init__(self):
         parser = read_config_file()
         self.info = MysqlInfo(parser)
+        self.cache = RedisClient()
+        self.sync_with_cache()
 
     def get_connection(self):
         return pymysql.connect(host=self.info.host, port=int(self.info.port),
@@ -42,6 +45,20 @@ class DBServer:
         conn.close()
 
         return todo_list
+
+    def get_all_todo_list_with_cache(self):
+        todo_list = self.cache.get_todo_list()
+        return todo_list
+
+    def get_doing_todo_list_with_cache(self):
+        all_todo_list = self.get_all_todo_list_with_cache()
+        doing_todo_list = [todo for todo in all_todo_list if todo.status == 0]
+        return doing_todo_list
+
+    def get_done_todo_list_with_cache(self):
+        all_todo_list = self.get_all_todo_list_with_cache()
+        done_todo_list = [todo for todo in all_todo_list if todo.status == 1]
+        return done_todo_list
 
     def get_doing_todo_list(self):
         all_todo_list = self.get_all_todo_list()
@@ -92,6 +109,7 @@ class DBServer:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
+        self.sync_with_cache()
 
     def mark_todo_done(self, todo):
         if todo.status == 1:
@@ -105,6 +123,7 @@ class DBServer:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
+        self.sync_with_cache()
 
     def unmark_todo_done(self, todo):
         if todo.status == 0:
@@ -118,6 +137,7 @@ class DBServer:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
+        self.sync_with_cache()
 
     def insert_sql_dump(self, filename='./queries/insert_dump.sql'):
         conn = self.get_connection()
@@ -128,3 +148,13 @@ class DBServer:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
+        self.sync_with_cache()
+
+    def sync_with_cache(self):
+        todo_list = self.get_all_todo_list()
+        keys = self.cache.client.scan_iter("*")
+
+        for key in keys:
+            self.cache.client.delete(key)
+
+        self.cache.add_todo_list(todo_list)

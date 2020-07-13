@@ -4,12 +4,13 @@ import src.todo
 from src.VOS_client import VOSClient
 
 app = Flask(__name__)
-db_server = src.mysql.DBServer()
+db_server = src.mysql.MySQLClient()
 
 
 @app.route('/')
 def index():
-    doing_todo_list = db_server.get_doing_todo_list()
+    # doing_todo_list = db_server.get_doing_todo_list()
+    doing_todo_list = db_server.get_doing_todo_list_with_cache()
     return render_template('index.html', todo_list=doing_todo_list)
 
 
@@ -27,7 +28,8 @@ def mark_todo_done(idx):
 
 @app.route('/done_list')
 def show_done_todo():
-    done_todo_list = db_server.get_done_todo_list()
+    # done_todo_list = db_server.get_done_todo_list()
+    done_todo_list = db_server.get_done_todo_list_with_cache()
     return render_template('done_list.html', todo_list=done_todo_list)
 
 
@@ -51,10 +53,11 @@ def insert_sql_dump():
     return redirect(url_for('index'))
 
 
-# @app.route('/add_todo/<content>', methods=['POST'])
-# def add_todo(content):
-#     db_server.add_todo(src.todo.Todo(None, content, 0))
-#     return redirect(url_for('index'))
+@app.route('/add_todo/', methods=['POST'])
+def add_todo():
+    # db_server.add_todo(src.todo.Todo(None, request.form['Content'], 0))
+    db_server.add_todo(src.todo.Todo(None, request.form['Content'], 0))
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
