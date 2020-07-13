@@ -98,6 +98,7 @@ class MySQLClient:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
+        self.sync_with_cache()
 
     def remove_todo(self, todo):
         conn = self.get_connection()
