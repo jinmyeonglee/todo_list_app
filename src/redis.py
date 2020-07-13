@@ -22,6 +22,11 @@ class RedisClient:
     def delete_todo(self, todo):
         self.client.delete(todo.idx)
 
+    def toggle_status(self, todo):
+        value = self.client.get(todo.idx).decode('utf-8')
+        toggled_todo = Todo(todo.idx, value[:-1], 0 if int(value[-1]) == 1 else 1)
+        self.add_todo(toggled_todo)
+
     def add_todo_list(self, todo_list):
         # for todo in todo_list:
         #     self.add_todo(todo)

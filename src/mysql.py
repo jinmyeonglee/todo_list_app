@@ -110,7 +110,7 @@ class MySQLClient:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
-        self.sync_with_cache()
+        self.cache.delete_todo(todo)
 
     def mark_todo_done(self, todo):
         if todo.status == 1:
@@ -124,7 +124,7 @@ class MySQLClient:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
-        self.sync_with_cache()
+        self.cache.toggle_status(todo)
 
     def unmark_todo_done(self, todo):
         if todo.status == 0:
@@ -138,7 +138,7 @@ class MySQLClient:
         self.excute_queries(sql_query, cursor)
 
         conn.close()
-        self.sync_with_cache()
+        self.cache.toggle_status(todo)
 
     def insert_sql_dump(self, filename='./queries/insert_dump.sql'):
         conn = self.get_connection()
