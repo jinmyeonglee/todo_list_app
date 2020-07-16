@@ -7,7 +7,6 @@ spec:
     - http:
         paths:
           - path: /
-#            pathType: Prefix
             backend:
               serviceName: sample-app
               servicePort: 6000
