@@ -1,7 +1,8 @@
 from configparser import ConfigParser
 from datetime import datetime
-from logging.handlers import RotatingFileHandler
-from logging import Formatter, DEBUG, StreamHandler
+from logging import FileHandler
+from logging import Formatter, DEBUG, StreamHandler, getLogger
+from sys import stdout
 
 
 def timestamp():
@@ -22,21 +23,23 @@ def read_sql_file(filename):
         return lines
 
 
-def init_log(app):
+def init_log():
+    logger = getLogger('werkzeug')
     formatter = Formatter(
         '%(asctime)s %(levelname)s: %(message)s in %(filename)s:%(lineno)d]')
 
-    file_handler = RotatingFileHandler("./sample-app.log",
-                                       maxBytes=100000,
-                                       backupCount=1000)
+    file_handler = FileHandler("./sample-app.log")
     file_handler.setFormatter(formatter)
     file_handler.setLevel(DEBUG)
 
-    stream_handler = StreamHandler()
-    stream_handler.setLevel(DEBUG)
-    stream_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
 
-    app.logger.addHandler(file_handler)
-    app.logger.addHandler(stream_handler)
+    # handler = StreamHandler(stdout)
+    # handler.setFormatter(formatter)
+    # handler.setLevel(DEBUG)
 
-    app.logger.info("logging start")
+    # logger.addHandler(handler)
+
+    logger.info("logging start")
+
+    return logger
