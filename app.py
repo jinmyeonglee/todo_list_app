@@ -3,14 +3,20 @@ import src.mysql
 import src.todo
 from src.VOS_client import VOSClient
 import sys
-from src.utillity import timestamp
+from src.utillity import timestamp, init_log
 
 import os
-assert os.environ.get('OS_PASSWORD') is not None
-sys.stderr.write(timestamp() + os.environ.get('OS_PASSWORD') + "\n")
 
 app = Flask(__name__)
+init_log(app)
+
+if os.environ.get('OS_PASSWORD') is None:
+    app.logger.error("There is no password in path, first check openrc file.")
+    raise ValueError("Please check auth first.")
+
+app.logger.info("password exists in path")
 db_server = src.mysql.MySQLClient()
+app.logger.info("mysql db connected")
 
 
 @app.route('/')
@@ -66,4 +72,5 @@ def add_todo():
 
 
 if __name__ == '__main__':
+    app.logger.info("Server starts")
     app.run('0.0.0.0')
