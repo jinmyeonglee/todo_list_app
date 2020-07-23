@@ -47,3 +47,20 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest
+
+    - name: Remove secrets and config file
+      run: |
+        rm dev.ini openrc pwd
+        ls
+
+    - name: Build docker image
+      run: docker build -t flyingsmurf/todo-list-python-app:latest .
+
+    - name: Login docker hub
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PWD: ${{ secrets.DOCKER_PWD }}
+      run: docker login -u "DOCKER_USER" -p "DOCKER_PWD"
+
+    - name: Push to docker hub
+      run: docker push flyingsmurf/todo-list-python-app:latest

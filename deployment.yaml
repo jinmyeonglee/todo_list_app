@@ -31,7 +31,18 @@ spec:
     spec:
       containers:
       - name: sample-app
-        image:
+        image: flyingsmurf/todo-list-python-app:latest
+        env:
+          - name: OPEN_RC
+            valueFrom:
+              secretKeyRef:
+                name:
+                key:
+          - name: OPEN_RC_PWD
+            valueFrom:
+              secretKeyRef:
+                name:
+                key:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

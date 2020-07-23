@@ -11,4 +11,9 @@ EXPOSE 8080
 
 RUN python3 -m pip install -r requirements.txt
 
+RUN echo "$OPEN_RC" > openrc
+RUN echo "$OPEN_RC_PWD" > pwd
+RUN chmod +x openrc
+RUN ./openrc < pwd
+
 CMD ["python3 app.py"]
