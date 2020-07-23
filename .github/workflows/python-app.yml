@@ -38,7 +38,7 @@ jobs:
       run: |
         ls
         chmod +x openrc
-        ./openrc < pwd
+        source openrc < pwd
     - name: Test with pytest
       run: |
         pytest
