@@ -25,7 +25,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         pip install -r requirements.txt
-    - name: Make openrc file and execute it.
+    - name: Make openrc file.
       env:
         OPEN_RC: ${{ secrets.OPEN_RC }}
         OPRN_RC_PWD: ${{ secrets.OPEN_RC_PWD }}
@@ -34,6 +34,9 @@ jobs:
         touch pwd
         echo "$OPEN_RC" > openrc
         echo "$OPEN_RC_PWD" > pwd
+    - name: Execute openrc file.
+      run: |
+        ls
         chmod +x openrc
         ./openrc < pwd
     - name: Test with pytest
