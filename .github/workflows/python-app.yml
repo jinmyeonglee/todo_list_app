@@ -34,6 +34,12 @@ jobs:
         touch pwd
         echo "$OPEN_RC" > openrc
         echo "$OPEN_RC_PWD" > pwd
+    - name: Make config file.
+      env:
+        DEV_INI: ${{ secrets.DEV_INI }}
+      run: |
+        touch dev.ini
+        echo "$DEV_INI" > dev.ini
     - name: Execute openrc file.
       run: |
         chmod +x openrc
