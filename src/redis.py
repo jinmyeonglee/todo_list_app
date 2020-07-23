@@ -1,5 +1,5 @@
 import redis
-from src.utillity import read_config_file
+from src.utillity import Config
 from src.todo import Todo
 
 
@@ -12,7 +12,7 @@ class RedisInfo:
 
 class RedisClient:
     def __init__(self):
-        parser = read_config_file()
+        parser = Config().get_config()
         self.info = RedisInfo(parser)
         self.client = redis.StrictRedis(host=self.info.host, port=self.info.port, password=self.info.pwd)
 

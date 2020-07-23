@@ -1,11 +1,11 @@
 import boto3
 from botocore.client import Config
-from src.utillity import read_config_file
+from src.utillity import Config
 
 
 class VOSClient:
     def __init__(self):
-        parser = read_config_file('dev.ini')
+        parser = Config().get_config()
         self.access_key = parser.get('VOS', 'access_key')
         self.secret_key = parser.get('VOS', 'secret_key')
         self.s3_host = parser.get('VOS', 's3_host')

@@ -1,6 +1,6 @@
 import pymysql
 from src.todo import Todo
-from src.utillity import read_sql_file, read_config_file
+from src.utillity import read_sql_file, Config
 from src.redis import RedisClient
 
 
@@ -15,7 +15,8 @@ class MysqlInfo:
 
 class MySQLClient:
     def __init__(self):
-        parser = read_config_file()
+        parser = Config().get_config()
+        print(parser)
         self.info = MysqlInfo(parser)
         self.cache = RedisClient()
         self.sync_with_cache()
