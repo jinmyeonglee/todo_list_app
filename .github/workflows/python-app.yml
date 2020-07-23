@@ -31,11 +31,11 @@ jobs:
         OPRN_RC_PWD: ${{ secrets.OPEN_RC_PWD }}
       run: |
         touch openrc
-        echo ${{ secrets.OPEN_RC }}
+        touch pwd
         echo "$OPEN_RC" > openrc
+        echo "$OPEN_RC_PWD" > pwd
         chmod +x openrc
-        ./openrc < "$OPEN_RC_PWD"
-        echo ${{ secrets.OPEN_RC_PWD }}
+        ./openrc < pwd
     - name: Test with pytest
       run: |
         pytest
