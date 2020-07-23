@@ -28,15 +28,14 @@ jobs:
     - name: Make openrc file.
       env:
         OPEN_RC: ${{ secrets.OPEN_RC }}
-        OPRN_RC_PWD: ${{ secrets.OPEN_RC_PWD }}
+        OPEN_RC_PWD: ${{ secrets.OPEN_RC_PWD }}
       run: |
-        touch openrc
-        touch pwd
+#        touch openrc
+#        touch pwd
         echo "$OPEN_RC" > openrc
         echo "$OPEN_RC_PWD" > pwd
     - name: Execute openrc file.
       run: |
-        ls
         chmod +x openrc
         source openrc < pwd
     - name: Test with pytest
