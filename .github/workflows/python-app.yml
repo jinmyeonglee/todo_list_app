@@ -30,8 +30,8 @@ jobs:
         OPEN_RC: ${{ secrets.OPEN_RC }}
         OPEN_RC_PWD: ${{ secrets.OPEN_RC_PWD }}
       run: |
-#        touch openrc
-#        touch pwd
+        touch openrc
+        touch pwd
         echo "$OPEN_RC" > openrc
         echo "$OPEN_RC_PWD" > pwd
     - name: Execute openrc file.
