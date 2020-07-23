@@ -21,6 +21,8 @@ class Config:
 
     def __init__(self, options=None):
         if self.parser is None:
+            if options is None:
+                options = {'ENV': False}
             Config.parser = self.set_config(options)
 
     def get_config(self):
@@ -29,10 +31,10 @@ class Config:
         return Config.parser
 
     def set_config(self, options):
-        if not options['ENV']:
-            return self.config_from_file()
-        else:
+        if 'ENV' in options and options['ENV']:
             return self.config_from_env()
+        else:
+            return self.config_from_file()
 
     def config_from_file(self, filename="dev.ini"):
         parser = ConfigParser()
