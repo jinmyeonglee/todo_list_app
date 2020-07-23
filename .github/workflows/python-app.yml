@@ -40,4 +40,4 @@ jobs:
         source openrc < pwd
     - name: Test with pytest
       run: |
-        pytest
+        python -m pytest
